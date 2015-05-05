@@ -1,9 +1,6 @@
-#!/usr/bin/env ruby
-
 require "micromidi"
 
 # This example sends some messages to an output selected by the user
-
 output = UniMIDI::Output.gets
 
 MIDI.using(output) do
