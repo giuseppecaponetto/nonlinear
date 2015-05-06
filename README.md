@@ -1,2 +1,2 @@
 # nonlinear
-a dsl for midi scripting
+a high level dsl for midi scripting
