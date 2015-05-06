@@ -1,2 +1,4 @@
 source 'https://rubygems.org'
-gem 'micromidi'
+
+gem 'midi-message'
+gem 'unimidi'
