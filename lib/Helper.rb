@@ -1,6 +1,9 @@
+require 'io/console'
+
 class Helper
-  
+
   def initialize
+
   end
 
   def exitMonitorOn
@@ -14,5 +17,12 @@ class Helper
   def exitMonitorOff
     @reaper.kill
   end
-
+  def reloadListenerMonitorOn
+    #TODO
+  end
+  def reloadListenerMonitorOff
+    #TODO
+  end
+  
 end
+
