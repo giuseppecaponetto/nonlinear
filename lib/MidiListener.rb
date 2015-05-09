@@ -5,7 +5,8 @@ require_relative '../lib/MyLogger.rb'
 
 class MidiListener
   
-  def initialize()
+  def initialize(clock)
+    @clock = clock
     @logger = MyLogger.instance
     @translator = MidiTranslator.new
     @stop = false
@@ -14,6 +15,7 @@ class MidiListener
   
   def action
     @logger.debug("Enetered in MidiListener's 'action' method")
+    @clock.run
   end
   
   def listen
