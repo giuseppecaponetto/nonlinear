@@ -17,7 +17,7 @@ class MidiListener
     @logger.debug("Enetered in MidiListener's 'action' method")
     @clock.run
   end
-  
+  # when the listen method is called the listener waits for a play or continue midi message
   def listen
     @logger.debug("Waiting for play/start message from sequencer..")
     message_1 = @translator.translate(@input.gets)

@@ -11,13 +11,7 @@ class Clock
     @tempo = tempo
     @logger = MyLogger.instance
     @clock = Topaz::Tempo.new(tempo)do
-    if @f
-      action1
-      @f = false
-    else
-      action2
-      @f = true
-    end
+      action
     end
   end
   
@@ -26,7 +20,7 @@ class Clock
     @logger.debug("Clock started ticking @ #{@tempo} bpm")
   end
   
-  def action1
+  def action
     thread = Thread.new do
       @logger.debug("Simulated tick!")
       @output.output.puts(0x90, 36 + 2, 100) # note on
@@ -34,15 +28,5 @@ class Clock
       @output.output.puts(0x80, 36 + 2, 100) # note off   
     end
     thread.join 
-  end
-    def action2
-    thread = Thread.new do
-      @logger.debug("Simulated tick!")
-      @output.output.puts(0x90, 36 + 3, 100) # note on
-      sleep(0.001)
-      @output.output.puts(0x80, 36 + 3, 100) # note off   
-    end
-    thread.join 
-  end
-  
+  end  
 end

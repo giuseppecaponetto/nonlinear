@@ -1,15 +1,18 @@
 require 'io/console'
-
+require_relative '../lib/MyLogger.rb'
 class Helper
 
   def initialize
-
+  @logger = MyLogger.instance
   end
 
   def exitMonitorOn
     @reaper = Thread.new do
       loop do
-        Kernel.exit if gets =~ /exit/
+        if gets =~ /exit/
+          @logger.info("Nonlinear quitted. Goodbye.")
+          Kernel.exit
+        end 
       end
     end
   end
