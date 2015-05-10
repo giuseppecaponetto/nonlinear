@@ -5,3 +5,4 @@ gem 'unimidi'
 gem 'midi-eye'
 gem 'micromidi'
 gem "midi-topaz"
+gem 'diamond'

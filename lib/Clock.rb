@@ -2,14 +2,22 @@ require 'topaz'
 require 'midi-eye'
 require 'topaz'
 require_relative '../lib/MyLogger.rb'
+require_relative '../lib/Output.rb'
 
 class Clock
   def initialize(tempo)
+    @f = true
+    @output = Output.new
     @tempo = tempo
-    #@tinterval = 60000/tempo
     @logger = MyLogger.instance
     @clock = Topaz::Tempo.new(tempo)do
-    action
+    if @f
+      action1
+      @f = false
+    else
+      action2
+      @f = true
+    end
     end
   end
   
@@ -18,11 +26,23 @@ class Clock
     @logger.debug("Clock started ticking @ #{@tempo} bpm")
   end
   
-  def action
-    @logger.debug("Simulated tick!")
-    message = "a"
-
-    `say "#{message}"`
+  def action1
+    thread = Thread.new do
+      @logger.debug("Simulated tick!")
+      @output.output.puts(0x90, 36 + 2, 100) # note on
+      sleep(0.001)
+      @output.output.puts(0x80, 36 + 2, 100) # note off   
+    end
+    thread.join 
+  end
+    def action2
+    thread = Thread.new do
+      @logger.debug("Simulated tick!")
+      @output.output.puts(0x90, 36 + 3, 100) # note on
+      sleep(0.001)
+      @output.output.puts(0x80, 36 + 3, 100) # note off   
+    end
+    thread.join 
   end
   
 end
