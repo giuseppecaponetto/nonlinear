@@ -10,20 +10,16 @@ class Clock
     @logger = MyLogger.instance
     @input = input
     @sequencer = MockSequencer.new
-    @clock = nil
-  end  
-  def run
-    @clock = Topaz::Tempo.new(@input, :interval => 8) do #:interval => 8 for a higher resolution
+    @clock = Topaz::Tempo.new(@input, :interval => 4, :midi_transport=>false) do #:interval => 8 for a higher resolution
       @sequencer.step #prints some info
       @output.puts(144, 38, 100)
       @output.puts(128, 38, 100)
     end
-    @clock.start(:background => true)
+  end  
+  def run
+    @clock.start(:background => true, :midi_transport=>false)
   end
   def stop
-    @clock.stop{true}
-    @clock = nil
-    @sequencer.reset
-    GC.start
+    @clock.stop
   end
 end

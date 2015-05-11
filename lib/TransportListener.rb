@@ -4,7 +4,6 @@ require_relative '../lib/Helper.rb'
 require_relative '../lib/MyLogger.rb'
 require_relative '../lib/Clock.rb'
 require_relative '../lib/Input.rb'
-require 'observer'
 
 class TransportListener
   def initialize(input=Input.instance.input)
@@ -12,13 +11,16 @@ class TransportListener
     @logger.debug("Started listening for transport control..")
     @translator = MidiTranslator.new
     @input = input
-    @clock = nil
+    @clock = Clock.instance
   end
   
   def listen_to_reason
-    loop do
-      log_all_messages
+    @thread = Thread.new do
+      loop do
+         log_all_messages
+      end
     end
+    @thread.join
   end
   
   def log_raw_midi
@@ -34,12 +36,14 @@ class TransportListener
       @logger.debug("Buffer depth: #{index}, Message: #{message[index]}")
     end
     if message[index]=="start"
-      @clock = Clock.instance
+      @logger.debug("Reason sent a #{message[index]} message..")
       @clock.run
-      GC.start
     elsif message[index]=="continue"
-      GC.start
+      @logger.debug("Reason sent a #{message[index]} message..")
+      @clock.run
     elsif message[index]=="stop"
+      @logger.debug("Reason sent a #{message[index]} message..")
+      Thread.kill(@thread)
       @clock.stop
       GC.start
     end

@@ -15,7 +15,14 @@ class Runit
     @listener = TransportListener.new
     @h = Helper.new
     @h.exitMonitorOn
-    @listener.listen_to_reason
+    10.times do
+      @listener.listen_to_reason
+      @l.debug("Reinitializing listener")
+      @listener = nil
+      ObjectSpace.garbage_collect
+      GC.start
+      @listener = TransportListener.new
+    end
    end
 end
 r = Runit.new
