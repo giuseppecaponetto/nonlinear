@@ -15,7 +15,7 @@ class Runit
     @listener = TransportListener.new
     @h = Helper.new
     @h.exitMonitorOn
-    @listener.run
+    @listener.listen_to_reason
    end
 end
 r = Runit.new

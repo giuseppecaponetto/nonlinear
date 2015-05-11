@@ -19,7 +19,7 @@ class MidiTranslator
           when 255 then "sysrequest"
           else "unknown"
         end
-        @buffer.unshift(translated)
+        @buffer.push(translated)
     end
   end
   

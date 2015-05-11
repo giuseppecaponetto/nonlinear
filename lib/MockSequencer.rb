@@ -4,6 +4,11 @@ class MockSequencer
     @logger = MyLogger.instance
     @step = 0
   end
+  
+  def reset
+    @logger = MyLogger.instance
+    @step = 0
+  end
   def step
     @step +=1
     @logger.debug("Tick on step: #{@step}")
