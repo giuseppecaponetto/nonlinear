@@ -7,8 +7,9 @@ class TransportListener
   def initialize(input=UniMIDI::Input.use(:first))
     @thread = Thread.new do
       loop do
-        p @input.gets
-        @logger.debug("Received: #{getmessage}")
+        get_messages_no_clock
+        #get_all_messages
+        #printRawMidi
       end
     end
     @thread.priority=99
@@ -17,12 +18,31 @@ class TransportListener
     @input = input
   end
   
+  def printRawMidi
+    @logger.debug(@translator.throu(@input.gets))
+  end
+  
   def run
      @logger.debug("Listening to Reason 8 controls..")
      @thread.join
   end
-  def getmessage
-    message = @translator.translate(@input.gets)
+  def get_all_messages
+    @translator.translate(@input.gets)
+    message = @translator.buffer
+    message.each_index do 
+    |index|
+    @logger.debug("Buffer depth: #{index}, Message: #{message[index]}")
+    end
+  end
+  def get_messages_no_clock
+    @translator.translate(@input.gets)
+    message = @translator.buffer
+    message.each_index do 
+    |index|
+    if message[index] != "clock"
+      @logger.debug("Buffer depth: #{index}, Message: #{message[index]}")
+    end
+    end
   end
   
 end
