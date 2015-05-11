@@ -8,9 +8,11 @@ class Clock
     @output = Output.new.output
     @logger = MyLogger.instance
     sequencer = MockSequencer.new
-    @clock = Topaz::Tempo.new(input, :interval => 8) do #:interval => 8 for a higher resolution
+    @clock = Topaz::Tempo.new(input, :interval => 16) do #:interval => 8 for a higher resolution
       sequencer.step #prints some info
-      @output.puts(144, 36, Random.rand(50..100))
+        r = Random.rand(36..38)
+        @output.puts(144, r, 100)
+        @output.puts(128, r, 100)
     end
   end  
   def run
