@@ -15,8 +15,7 @@ class MidiTranslator
           when 251 then "continue" #"continue"
           when 252 then "stop"
           when 248 then "clock"
-          when 248 then "tune"
-          when 246 then "clock"
+          when 246 then "tune"
           when 255 then "sysrequest"
           else "unknown"
         end

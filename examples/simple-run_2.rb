@@ -4,17 +4,17 @@ require_relative '../lib/Input.rb'
 require_relative '../lib/MockSequencer.rb'
 require_relative '../lib/MidiTranslator.rb'
 require_relative '../lib/TransportListener.rb'
+require_relative '../lib/Clock.rb'
 
 require 'topaz'
 
 class Runit
   def initialize
-    @listener = TransportListener.new
-    @sequencer = MockSequencer.new
-    @h = Helper.new
-    @h.exitMonitorOn
     @l = MyLogger.instance
     @l.info("Enter 'exit' and press return to quit the example.")
+    @listener = TransportListener.new
+    @h = Helper.new
+    @h.exitMonitorOn
     @listener.run
    end
 end
