@@ -3,9 +3,11 @@ require_relative '../lib/Helper.rb'
 require_relative '../lib/MyLogger.rb'
 require_relative '../lib/Clock.rb'
 require_relative '../lib/Input.rb'
+require_relative '../lib/BpmCounter.rb'
 
 class TransportListener
   def initialize
+    @bpm_counter = BpmCounter.new(6)
     @exit = false
     @listening = false
     @logger = MyLogger.instance
@@ -27,12 +29,34 @@ class TransportListener
     @thread = Thread.new do
       loop do
         @translator.update(@input.gets)
+        #log_bpm
+        log_bpm_average
         #log_raw_midi
         #log_translated_midi
         exit_thread if @exit
       end
     end
     @thread.run
+  end
+  
+  def log_bpm_average
+    @translator.translated_midi_buffer.each_index do
+      |index|
+      if @translator.translated_midi_buffer[index][:command] =="clock"
+        @bpm_counter.update(@translator.translated_midi_buffer[index][:time_stamp])
+        @bpm_counter.log_bpm_average
+      end
+    end
+  end
+  
+  def log_bpm
+    @translator.translated_midi_buffer.each_index do
+      |index|
+      if @translator.translated_midi_buffer[index][:command] =="clock"
+        @bpm_counter.update(@translator.translated_midi_buffer[index][:time_stamp])
+        @bpm_counter.log_bpm
+      end
+    end
   end
   
   def listening?

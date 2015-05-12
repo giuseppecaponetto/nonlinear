@@ -16,21 +16,12 @@ class Runit
     @h.exitMonitorOn
   end
   #starts the listener and runs it for 5 sec then stops it
+  #simulates a clock @ 120 bpm
   #simulates a 2 second pause in wich the listener sould be off
-  #repeats the firt step
+  #repeats the steps above
   def run
     @listener.listen_to_reason
-    @clock.start
-    sleep(4)
-    @clock.stop
-    @listener.stop_listening
-    @l.debug("Simulating 2 sec pause in main thread")
-    sleep(2)
-    @l.debug("Pause ended in main thread")
-    @listener.listen_to_reason
-    @clock.start
-    sleep(4)
-    @clock.stop
+    sleep(100)
     @listener.stop_listening
   end
   def quit_message

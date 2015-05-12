@@ -1,7 +1,7 @@
 require_relative '../lib/MyLogger.rb'
 
 class MidiTranslator
-  attr_reader :midi_buffer
+  attr_reader :midi_buffer, :translated_midi_buffer
   def initialize
     @raw_midi_buffer = Array.new
     @translated_midi_buffer = Array.new
@@ -46,7 +46,8 @@ class MidiTranslator
         when 252 then "stop"  
         else "undefined"
       end 
-      @translated_midi_buffer.push(Hash.new(:command=>translated, :time_stamp=>raw[index][:timestamp]))
+      hash = {:command=>translated, :time_stamp=>raw[index][:timestamp]}
+      @translated_midi_buffer.push(hash)
     end
   end
   
