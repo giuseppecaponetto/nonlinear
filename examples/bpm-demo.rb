@@ -11,7 +11,7 @@ class Runit
     @clock = Clock.new
     @l = MyLogger.instance
     @l.info("Enter 'exit' and press return to quit the example.")
-    @listener = TransportListener.new(false, 6)
+    @listener = TransportListener.new(true, 100)
     @h = Helper.new
     @h.exitMonitorOn
   end
@@ -21,9 +21,7 @@ class Runit
   #repeats the steps above
   def run
     @listener.listen_to_reason
-    @clock.start
     sleep(200)
-    @clock.stop
     @listener.stop_listening
   end
   def quit_message

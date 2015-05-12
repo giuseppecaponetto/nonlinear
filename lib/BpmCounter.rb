@@ -1,5 +1,6 @@
 class BpmCounter
   def initialize(threshold)
+    @timestamps = Array.new
     @threshold = threshold
     @counter = 0
     @logger = MyLogger.instance
@@ -9,7 +10,6 @@ class BpmCounter
     @last_timestamp=0
     @new_timestamp=0
     @bpm_average = "Unknown"
-    @bpm_sum=0
   end
   
   def log_bpm
@@ -25,6 +25,7 @@ class BpmCounter
       @new_timestamp = current_timestamp
       @first_run = false
       @bpm = 0
+      @bpm_average=0
     else
     @last_timestamp = @new_timestamp
     @new_timestamp = current_timestamp
@@ -33,18 +34,7 @@ class BpmCounter
     calculate_bpm_average(@threshold)
     end
   end
-  
-  def reset
-    @counter = 0
-    @bpm=0
-    @first_run = true
-    @delta = 0
-    @last_timestamp=0
-    @new_timestamp=0
-    @bpm_average = "Unknown"
-    @bpm_sum=0
-  end
-  
+    
   def calculate_bpm
     quarter_note = @delta.to_f * 24.to_f
     @bpm = 60000 / quarter_note
@@ -53,11 +43,14 @@ class BpmCounter
   def calculate_bpm_average(threshold)
     @counter +=1
     if @counter<=threshold
-      @bpm_sum += @bpm
+      @timestamps.push(@bpm)
+      sum = @timestamps.inject(:+)
+      @bpm_average = sum.to_f/@timestamps.size.to_f
     else
-      @bpm_average = @bpm_sum.to_f/threshold.to_f
-      @counter = 0
-      @bpm_sum = 0
+      @timestamps.delete_at(0)
+      @timestamps.push(@bpm)
+      sum = @timestamps.inject(:+)
+      @bpm_average = sum.to_f/threshold.to_f
     end
   end
   

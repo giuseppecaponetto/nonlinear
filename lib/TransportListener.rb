@@ -6,8 +6,10 @@ require_relative '../lib/Input.rb'
 require_relative '../lib/BpmCounter.rb'
 
 class TransportListener
-  def initialize
-    @bpm_counter = BpmCounter.new(6)
+
+  def initialize(average_bpm_log_enable=false, threshold)
+    @average_bpm_log_enable = average_bpm_log_enable
+    @bpm_counter = BpmCounter.new(threshold)
     @exit = false
     @listening = false
     @logger = MyLogger.instance
@@ -29,10 +31,9 @@ class TransportListener
     @thread = Thread.new do
       loop do
         @translator.update(@input.gets)
-        handle_midi_events
-        #log_bpm
-        #log_bpm_average
-        #log_raw_midi
+        handle_midi_events  
+        log_bpm_average if @average_bpm_log_enable
+        #log_raw_midi 
         #log_translated_midi
         exit_thread if @exit
       end
