@@ -1,0 +1,12 @@
+requirements:
+
+0)OSX OS
+1)Propellerhead Reason 8
+2)IAC driver bus set up
+3)MIDI Patch bay for midi routing
+
+notes:
+1)under reason sync settings disable all voices: no midi clock when seq. is stopped, no pos.pointer, no stop/continue when repositioning.
+
+todo:
+2)a lot of things..

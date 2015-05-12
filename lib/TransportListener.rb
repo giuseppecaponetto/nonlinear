@@ -8,6 +8,7 @@ require_relative '../lib/BpmCounter.rb'
 class TransportListener
 
   def initialize(average_bpm_log_enable=false, threshold)
+    @clock = Clock.new
     @average_bpm_log_enable = average_bpm_log_enable
     @bpm_counter = BpmCounter.new(threshold)
     @exit = false
@@ -55,12 +56,16 @@ class TransportListener
       end
       if event == "START"
       @logger.debug("ATTENTION: ---> #{event} action detected.")
+      @clock.start
       elsif event == "STOP"
       @logger.debug("ATTENTION: ---> #{event} action detected.")
+      @clock.stop
       elsif event == "POSITION"
       @logger.debug("ATTENTION: ---> #{event} action detected.")
+
       elsif event == "CONTINUE"
       @logger.debug("ATTENTION: ---> #{event} action detected.")
+      @clock.start
       elsif event == "CLOCK"
       else
         @logger.debug("ATTENTION: ---> #{@translator.translated_midi_buffer[index][:command]} action detected.")

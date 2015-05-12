@@ -15,6 +15,7 @@ class BpmCounter
   def log_bpm
     @logger.debug("Current bpm (without threshold) is: #{@bpm}")
   end
+  
   def log_bpm_average
     @logger.debug("Current average bpm (with threshold #{@threshold}) is: #{@bpm_average}")
   end
