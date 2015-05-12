@@ -18,6 +18,7 @@ class TransportListener
       loop do
         @translator.update(@input.gets)
         log_raw_midi
+        log_translated_midi
       end
     end
     @thread.join
@@ -29,8 +30,8 @@ class TransportListener
     @translator.log_print_buffer
   end
 
-  def log_midi
-    @logger.debug()
+  def log_translated_midi
+    @translator.log_print_translated_buffer
   end
     
 end
