@@ -30,13 +30,24 @@ class TransportListener
       loop do
         @translator.update(@input.gets)
         #log_bpm
-        log_bpm_average
+        #log_bpm_average
         #log_raw_midi
         #log_translated_midi
         exit_thread if @exit
       end
     end
     @thread.run
+  end
+  
+  def handle_midi_events
+    @translator.translated_midi_buffer.each_index do
+      |index|
+      event =
+      case @translator.translated_midi_buffer[index][:command]
+      when "" then ""
+      else ""
+      end
+    end
   end
   
   def log_bpm_average
@@ -65,7 +76,7 @@ class TransportListener
   
   private
   def exit_thread
-    @logger.debug("Killing TransportListener thread.")
+    @logger.debug("Killing TransportListener thread..")
     @thread.exit
   end
   

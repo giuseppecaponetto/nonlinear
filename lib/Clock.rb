@@ -4,13 +4,9 @@ require_relative '../lib/Output.rb'
 
 class Clock
   def initialize
+    @sequencer = MockSequencer.new
     @logger = MyLogger.instance
     @exit = false
-  end
-  
-  def mock_clock_task
-      @logger.debug("MOCK: Clock is ticking at 120 bpm")
-      sleep(0.5)
   end
   
   def start
@@ -27,6 +23,14 @@ class Clock
   
   def stop
     @logger.debug("Clock stopping..")
+    @sequencer.reset
     @exit = true
+  end
+  
+  private
+  def mock_clock_task
+      #@logger.debug("MOCK: Clock is ticking at 120 bpm")
+      @sequencer.log_step
+      sleep(0.5)
   end
 end
