@@ -6,8 +6,6 @@ require_relative '../lib/MidiTranslator.rb'
 require_relative '../lib/TransportListener.rb'
 require_relative '../lib/Clock.rb'
 
-require 'topaz'
-
 class Runit
   def initialize
     @l = MyLogger.instance
@@ -15,14 +13,10 @@ class Runit
     @listener = TransportListener.new
     @h = Helper.new
     @h.exitMonitorOn
-    10.times do
-      @listener.listen_to_reason
-      @l.debug("Reinitializing listener")
-      @listener = nil
-      ObjectSpace.garbage_collect
-      GC.start
-      @listener = TransportListener.new
-    end
-   end
+  end
+  def run
+    @listener.listen_to_reason
+  end
 end
 r = Runit.new
+r.run

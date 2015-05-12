@@ -1,29 +1,24 @@
+require_relative '../lib/MyLogger.rb'
+
 class MidiTranslator
-  attr_reader :buffer
+  attr_reader :midi_buffer
   def initialize
-    @buffer = Array.new
+    @midi_buffer = Array.new
+    @logger = MyLogger.instance
   end
   #il messaggio è un hash/array.. arrivano in overflow e alcuni messaggi non vengono letti.
-  def translate(midi)
-    @buffer.clear 
+  def update(midi)
+    @midi_buffer.clear
     midi.each_index do
-        |x|
-        translated = 
-        case midi[x][:data][0]
-          when 242 then "reposition" #act of replacing the cursor on the seguencer and releasing it
-          when 250 then "start" #"start"
-          when 251 then "continue" #"continue"
-          when 252 then "stop"
-          when 248 then "clock"
-          when 246 then "tune"
-          when 255 then "sysrequest"
-          else "unknown"
-        end
-        @buffer.push(translated)
+      |index|
+      @midi_buffer.push(midi[index])
     end
   end
   
-  def throu(midi)
-    translated = midi
+  def log_print_buffer
+    @midi_buffer.each_index do
+      |index|
+      @logger.debug("MIDI-MESSAGE: #{@midi_buffer[index]} --- BUFFER INDEX: #{index}")
+    end
   end
 end

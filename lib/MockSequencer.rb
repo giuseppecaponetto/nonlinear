@@ -1,10 +1,10 @@
 require_relative '../lib/MyLogger.rb'
+
 class MockSequencer
   def initialize
     @logger = MyLogger.instance
     @step = 0
   end
-  
   def reset
     @logger = MyLogger.instance
     @step = 0
