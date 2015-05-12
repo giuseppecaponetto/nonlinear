@@ -53,8 +53,17 @@ class TransportListener
       when "clock" then "CLOCK"
       else "UNKNOWN"
       end
-      if event!="CLOCK"
+      if event == "START"
       @logger.debug("ATTENTION: ---> #{event} action detected.")
+      elsif event == "STOP"
+      @logger.debug("ATTENTION: ---> #{event} action detected.")
+      elsif event == "POSITION"
+      @logger.debug("ATTENTION: ---> #{event} action detected.")
+      elsif event == "CONTINUE"
+      @logger.debug("ATTENTION: ---> #{event} action detected.")
+      elsif event == "CLOCK"
+      else
+        @logger.debug("ATTENTION: ---> #{@translator.translated_midi_buffer[index][:command]} action detected.")
       end
     end
   end

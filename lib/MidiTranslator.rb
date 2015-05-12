@@ -43,8 +43,10 @@ class MidiTranslator
         when 248 then "clock"
         when 250 then "start"
         when 251 then "continue"
-        when 252 then "stop"  
-        else "undefined"
+        when 252 then "stop"
+        when 144 then "note_on"
+        when 128 then "note_off"
+        else raw[index][:data][0]
       end 
       hash = {:command=>translated, :time_stamp=>raw[index][:timestamp]}
       @translated_midi_buffer.push(hash)
