@@ -29,6 +29,7 @@ class TransportListener
     @thread = Thread.new do
       loop do
         @translator.update(@input.gets)
+        handle_midi_events
         #log_bpm
         #log_bpm_average
         #log_raw_midi
@@ -44,8 +45,15 @@ class TransportListener
       |index|
       event =
       case @translator.translated_midi_buffer[index][:command]
-      when "" then ""
-      else ""
+      when "start" then "START"
+      when "continue" then "CONTINUE"
+      when "stop" then "STOP"
+      when "position" then "POSITION"
+      when "clock" then "CLOCK"
+      else "UNKNOWN"
+      end
+      if event!="CLOCK"
+      @logger.debug("ATTENTION: ---> #{event} action detected.")
       end
     end
   end

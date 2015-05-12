@@ -22,13 +22,7 @@ class Runit
   def run
     @listener.listen_to_reason
     @clock.start
-    sleep(5)
-    @clock.stop
-    @listener.stop_listening
-    sleep(3)
-    @listener.listen_to_reason
-    @clock.start
-    sleep(5)
+    sleep(200)
     @clock.stop
     @listener.stop_listening
   end
