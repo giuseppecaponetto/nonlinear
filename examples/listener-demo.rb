@@ -16,7 +16,16 @@ class Runit
   end
   def run
     @listener.listen_to_reason
+    sleep(5)
+    @listener.stop_listening
+    @listener.listen_to_reason
+    sleep(5)
+    @listener.stop_listening
+  end
+  def quit_message
+    @l.debug("Nonlinear terminated. Goodbye.")
   end
 end
 r = Runit.new
 r.run
+r.quit_message
