@@ -21,7 +21,7 @@ class Runit
   #repeats the steps above
   def run
     @listener.listen_to_reason
-    sleep(200)
+    sleep(20)
     @listener.stop_listening
   end
   def quit_message

@@ -8,7 +8,6 @@ require_relative '../lib/Clock.rb'
 
 class Runit
   def initialize
-    @clock = Clock.new()
     @l = MyLogger.instance
     @l.info("Enter 'exit' and press return to quit the example.")
     @listener = TransportListener.new(false, 6)
