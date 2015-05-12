@@ -15,19 +15,21 @@ class TransportListener
   end
   
   def stop_listening
+    @logger.debug("Reason control message listener stopping..")
     @exit = true
     @listening = false
   end
 
   def listen_to_reason
+    @logger.debug("Reason control message listener starting..")
     @exit = false
     @listening = true
     @thread = Thread.new do
       loop do
         @translator.update(@input.gets)
-        log_raw_midi
-        log_translated_midi
-        @thread.exit if @exit
+        #log_raw_midi
+        #log_translated_midi
+        exit_thread if @exit
       end
     end
     @thread.run
@@ -38,6 +40,10 @@ class TransportListener
   end
   
   private
+  def exit_thread
+    @logger.debug("Killing TransportListener thread.")
+    @thread.exit
+  end
   
   def log_raw_midi
     @translator.log_print_buffer

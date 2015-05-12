@@ -8,18 +8,29 @@ require_relative '../lib/Clock.rb'
 
 class Runit
   def initialize
+    @clock = Clock.new
     @l = MyLogger.instance
     @l.info("Enter 'exit' and press return to quit the example.")
     @listener = TransportListener.new
     @h = Helper.new
     @h.exitMonitorOn
   end
+  #starts the listener and runs it for 5 sec then stops it
+  #simulates a 2 second pause in wich the listener sould be off
+  #repeats the firt step
   def run
     @listener.listen_to_reason
-    sleep(5)
+    @clock.start
+    sleep(4)
+    @clock.stop
     @listener.stop_listening
+    @l.debug("Simulating 2 sec pause in main thread")
+    sleep(2)
+    @l.debug("Pause ended in main thread")
     @listener.listen_to_reason
-    sleep(5)
+    @clock.start
+    sleep(4)
+    @clock.stop
     @listener.stop_listening
   end
   def quit_message
