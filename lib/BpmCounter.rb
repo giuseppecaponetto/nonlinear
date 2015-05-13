@@ -1,5 +1,6 @@
 class BpmCounter
   def initialize(threshold)
+    @tick_interval_quarter_notes = 0
     @timestamps = Array.new
     @threshold = threshold
     @counter = 0
@@ -11,6 +12,9 @@ class BpmCounter
     @new_timestamp=0
     @bpm_average = "Unknown"
   end
+  def get_interval
+    @tick_interval_quarter_notes
+  end
   
   def log_bpm
     @logger.debug("Current bpm (without threshold) is: #{@bpm.round(2)}")
@@ -21,6 +25,7 @@ class BpmCounter
   end
   
   def update(current_timestamp)
+    @tick_interval_quarter_notes = (@last_timestamp-current_timestamp).abs
     if @first_run
       @last_timestamp = 0
       @new_timestamp = current_timestamp

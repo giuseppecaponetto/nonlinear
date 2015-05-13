@@ -7,11 +7,9 @@ require_relative '../lib/BpmCounter.rb'
 
 class TransportListener
 
-  def initialize(average_bpm_log_enable=false, threshold, bpm_log_enable)
+  def initialize
+    @total_clock_messages = 0
     @clock = Clock.new
-    @average_bpm_log_enable = average_bpm_log_enable
-    @bpm_log_enable = bpm_log_enable
-    @bpm_counter = BpmCounter.new(threshold)
     @exit = false
     @listening = false
     @logger = MyLogger.instance
@@ -34,7 +32,6 @@ class TransportListener
       loop do
         @translator.update(@input.gets)
         handle_midi_events  
-        update_bpm_average
         #log_raw_midi 
         #log_translated_midi
         exit_thread if @exit
@@ -57,39 +54,24 @@ class TransportListener
       end
       if event == "START"
       @logger.debug("ATTENTION: ---> #{event} action detected.")
-      @clock.start
+      @total_clock_messages = 0
       elsif event == "STOP"
       @logger.debug("ATTENTION: ---> #{event} action detected.")
-      @clock.stop
+      @total_clock_messages = 0
       elsif event == "POSITION"
       @logger.debug("ATTENTION: ---> #{event} action detected.")
-
+      
       elsif event == "CONTINUE"
       @logger.debug("ATTENTION: ---> #{event} action detected.")
-      @clock.start
+      
       elsif event == "CLOCK"
+        if @total_clock_messages % 24 == 0
+          @logger.debug("ATTENTION: ---> #QUARTER NOTE event TRIGGERED.")
+          @clock.test_output
+        end
+        @total_clock_messages +=1
       else
         @logger.debug("ATTENTION: ---> #{@translator.translated_midi_buffer[index][:command]} action detected.")
-      end
-    end
-  end
-  
-  def update_bpm_average
-    @translator.translated_midi_buffer.each_index do
-      |index|
-      if @translator.translated_midi_buffer[index][:command] =="clock"
-        @bpm_counter.update(@translator.translated_midi_buffer[index][:time_stamp])
-        @bpm_counter.log_bpm_average if @average_bpm_log_enable
-      end
-    end
-  end
-  
-  def update_bpm
-    @translator.translated_midi_buffer.each_index do
-      |index|
-      if @translator.translated_midi_buffer[index][:command] =="clock"
-        @bpm_counter.update(@translator.translated_midi_buffer[index][:time_stamp])
-        @bpm_counter.log_bpm if @bpm_log_enable
       end
     end
   end
