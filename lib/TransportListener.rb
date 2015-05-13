@@ -4,10 +4,13 @@ require_relative '../lib/MyLogger.rb'
 require_relative '../lib/Clock.rb'
 require_relative '../lib/Input.rb'
 require_relative '../lib/BpmCounter.rb'
+require_relative '../lib/Output.rb'
 
 class TransportListener
 
   def initialize(resolution)
+    @out=Output.instance
+    
     @resolution = resolution_to_clocks(resolution)
     @total_clock_messages = 0
     @clock = Clock.new
@@ -16,7 +19,7 @@ class TransportListener
     @logger = MyLogger.instance
     @logger.debug("Started listening for transport control messages...")
     @translator = MidiTranslator.new
-    @input = Input.instance.input
+    @input = Input.instance
   end
   
   def stop_listening
@@ -31,7 +34,7 @@ class TransportListener
     @listening = true
     @thread = Thread.new do
       loop do
-        @translator.update(@input.gets)
+        @translator.update(@input.get_input)
         handle_midi_events  
         #log_raw_midi 
         #log_translated_midi
@@ -69,7 +72,7 @@ class TransportListener
         if @total_clock_messages % @resolution == 0
           @logger.debug("ATTENTION: ---> #QUARTER NOTE event TRIGGERED.")
           #TODO implement pattern playing
-          @clock.test_output
+          @out.send(36, 0.1)
         end
         @total_clock_messages +=1
       else
