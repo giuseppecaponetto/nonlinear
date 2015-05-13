@@ -4,13 +4,12 @@ require_relative '../lib/MyLogger.rb'
 require_relative '../lib/Clock.rb'
 require_relative '../lib/Input.rb'
 require_relative '../lib/BpmCounter.rb'
-require_relative '../lib/Output.rb'
+require_relative '../lib/MidiDispatcher.rb'
 
 class TransportListener
 
   def initialize(resolution)
-    @out=Output.instance
-    
+    @dispatcher = MidiDispatcher.new
     @resolution = resolution_to_clocks(resolution)
     @total_clock_messages = 0
     @clock = Clock.new
@@ -72,7 +71,7 @@ class TransportListener
         if @total_clock_messages % @resolution == 0
           @logger.debug("ATTENTION: ---> #QUARTER NOTE event TRIGGERED.")
           #TODO implement pattern playing
-          @out.send(36, 0.1)
+          @dispatcher.play_steps
         end
         @total_clock_messages +=1
       else
