@@ -10,7 +10,7 @@ class Runit
   def initialize
     @l = MyLogger.instance
     @l.info("Enter 'exit' and press return to quit the example.")
-    @listener = TransportListener.new(false, 6)
+    @listener = TransportListener.new(false, 6, false)
     @h = Helper.new
     @h.exitMonitorOn
   end

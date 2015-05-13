@@ -13,11 +13,11 @@ class BpmCounter
   end
   
   def log_bpm
-    @logger.debug("Current bpm (without threshold) is: #{@bpm}")
+    @logger.debug("Current bpm (without threshold) is: #{@bpm.round(2)}")
   end
   
   def log_bpm_average
-    @logger.debug("Current average bpm (with threshold #{@threshold}) is: #{@bpm_average}")
+    @logger.debug("Current average bpm (with threshold #{@threshold}) is: #{@bpm_average.round(2)}")
   end
   
   def update(current_timestamp)
