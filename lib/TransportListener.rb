@@ -7,7 +7,8 @@ require_relative '../lib/BpmCounter.rb'
 
 class TransportListener
 
-  def initialize
+  def initialize(resolution)
+    @resolution = resolution_to_clocks(resolution)
     @total_clock_messages = 0
     @clock = Clock.new
     @exit = false
@@ -65,8 +66,9 @@ class TransportListener
       @logger.debug("ATTENTION: ---> #{event} action detected.")
       
       elsif event == "CLOCK"
-        if @total_clock_messages % 24 == 0
+        if @total_clock_messages % @resolution == 0
           @logger.debug("ATTENTION: ---> #QUARTER NOTE event TRIGGERED.")
+          #TODO implement pattern playing
           @clock.test_output
         end
         @total_clock_messages +=1
@@ -81,6 +83,19 @@ class TransportListener
   end
   
   private
+  
+  def resolution_to_clocks(resolution)
+    clocks =
+    case resolution
+    when 1 then 96
+    when 2 then 48
+    when 4 then 24
+    when 8 then 12
+    when 16 then 6
+    when 32 then 3
+    end
+  end
+  
   def exit_thread
     @logger.debug("Killing TransportListener thread..")
     @thread.exit
