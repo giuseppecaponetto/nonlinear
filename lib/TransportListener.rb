@@ -34,7 +34,7 @@ class TransportListener
       loop do
         @translator.update(@input.gets)
         handle_midi_events  
-        log_bpm_average
+        update_bpm_average
         #log_raw_midi 
         #log_translated_midi
         exit_thread if @exit
@@ -74,7 +74,7 @@ class TransportListener
     end
   end
   
-  def log_bpm_average
+  def update_bpm_average
     @translator.translated_midi_buffer.each_index do
       |index|
       if @translator.translated_midi_buffer[index][:command] =="clock"
@@ -84,7 +84,7 @@ class TransportListener
     end
   end
   
-  def log_bpm
+  def update_bpm
     @translator.translated_midi_buffer.each_index do
       |index|
       if @translator.translated_midi_buffer[index][:command] =="clock"
