@@ -9,4 +9,4 @@ notes:
 1)under reason sync settings disable all voices: no midi clock when seq. is stopped, no pos.pointer, no stop/continue when repositioning.
 
 todo:
-2)a lot of things..
+1)a lot of things..

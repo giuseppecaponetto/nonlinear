@@ -14,10 +14,9 @@ class Runit
     @h = Helper.new
     @h.exitMonitorOn
   end
-  #starts the listener and runs it for 5 sec then stops it
+  #starts the listener and runs it for 200 sec then stops it
   #simulates a clock @ 120 bpm
-  #simulates a 2 second pause in wich the listener sould be off
-  #repeats the steps above
+  #logs any transport controls pressed on reason.
   def run
     @listener.listen_to_reason
     sleep(200)
