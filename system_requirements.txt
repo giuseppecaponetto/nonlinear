@@ -12,3 +12,5 @@ todo:
 1)a lot of things..
 2)a lot of things..
 3)a lot of things..
+
+4)..apparently there has to be a sleep interval between note on and off...
