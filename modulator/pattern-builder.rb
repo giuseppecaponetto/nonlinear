@@ -1,4 +1,4 @@
-require_relative '../lib/modules/functions.rb'
+require_relative '../modulator/modules/functions.rb'
 
 module PatternBuilder
   class Step

@@ -2,33 +2,17 @@ require_relative '../lib/Output.rb'
 require_relative '../lib/MyLogger.rb'
 require_relative '../lib/MockPattern.rb'
 
-class MidiDispatcher
-  def initialize(pattern)
+class MockMidiDispatcher
+  def initialize
     @out = Output.instance
     @logger = MyLogger.instance
-    @pattern = pattern.channels
-    @steps = pattern.steps
-    @current_step = 0
+    @mock_pattern = MockPattern.new
   end
-  
-  def step
-    array = []
-    @pattern.each_index do
-      |index|
-      note = @pattern[index].array[@current_step].hash[:state]
-      array.push(index+36) if note !=0
-    end
-    @current_step +=1
-    if @current_step==@steps
-      @current_step=0
-    end
-    @logger.info("Step: #{@current_step.to_s}")
-    return array
-  end
-    
   
   def play_steps
-    notes = step
+    notes = @mock_pattern.step
+    @logger.debug("Step: #{notes.to_s}")
+    #notes = mock_notes
     thread_array = []
     notes.size.times do |i|
       if notes[i] !=0

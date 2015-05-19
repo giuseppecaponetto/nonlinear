@@ -3,15 +3,16 @@ require_relative '../lib/MyLogger.rb'
 require_relative '../lib/Input.rb'
 require_relative '../lib/MockSequencer.rb'
 require_relative '../lib/MidiTranslator.rb'
-require_relative '../lib/MockTransportListener.rb'
+require_relative '../lib/TransportListener.rb'
 require_relative '../lib/Clock.rb'
+require_relative '../modulator/pattern-builder.rb'
 
 class Runit
-  def initialize
+  def initialize(pattern)
     @clock = Clock.new
     @l = MyLogger.instance
     @l.info("Enter 'exit' and press return to quit the example.")
-    @listener = MockTransportListener.new(16)
+    @listener = TransportListener.new(32, pattern)
     @h = Helper.new
     @h.exitMonitorOn
   end
@@ -27,6 +28,27 @@ class Runit
     @l.debug("Nonlinear terminated. Goodbye.")
   end
 end
-r = Runit.new
+
+pattern = PatternBuilder::Pattern.new "Test", "A demo pattern", 32 do
+  pad "kick" do
+    every 4
+  end
+  channel "snare" do
+    every 8
+  end
+  channel "a" do
+    every 1
+  end
+    pad "b" do
+    every 16
+  end
+  channel "c" do
+    every 4
+  end
+  channel "d" do
+    every 4
+  end
+end
+r = Runit.new(pattern)
 r.run
 r.quit_message

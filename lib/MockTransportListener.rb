@@ -4,12 +4,12 @@ require_relative '../lib/MyLogger.rb'
 require_relative '../lib/Clock.rb'
 require_relative '../lib/Input.rb'
 require_relative '../lib/BpmCounter.rb'
-require_relative '../lib/MidiDispatcher.rb'
+require_relative '../lib/MockMidiDispatcher.rb'
 
-class TransportListener
+class MockTransportListener
 
-  def initialize(resolution, pattern)
-    @dispatcher = MidiDispatcher.new(pattern)
+  def initialize(resolution)
+    @dispatcher = MockMidiDispatcher.new
     @resolution = resolution_to_clocks(resolution)
     @total_clock_messages = 0
     @clock = Clock.new
@@ -99,7 +99,7 @@ class TransportListener
   end
   
   def exit_thread
-    @logger.debug("Killing TransportListener thread..")
+    @logger.debug("Killing MockTransportListener thread..")
     @thread.exit
   end
   
